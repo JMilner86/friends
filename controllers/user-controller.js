@@ -52,8 +52,46 @@ const userController = {
       .catch(err => res.json(err));
   },
 
+  addFriends({ params, body }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { friends: body } },
+      { new: true, runValidators: true }
+    )
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No user found with this id!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.json(err));
+  },
 
-  deletePizza({ params }, res) {
+  removeFriends({ params }, res) {
+    User.findOneAndDelete({ _id: params.friendsId })
+      .then(deletedfriend => {
+        if (!deletedfriend) {
+          return res.status(404).json({ message: 'No friend with this id!' });
+        }
+        return User.findOneAndUpdate(
+          { _id: params.userId },
+          { $pull: { friends: params.friendsId } },
+          { new: true }
+        );
+      })
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No user found with this id!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.json(err));
+  },
+
+
+  deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
