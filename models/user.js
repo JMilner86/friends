@@ -12,7 +12,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       trim: true,
-      validate: [validateEmail, 'Please fill a valid email address'],
+      required: 'Email address is required',
       match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     createdAt: {
