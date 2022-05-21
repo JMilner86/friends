@@ -1,11 +1,12 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const UserSchema = new Schema(
   {
     username: {
       type: String,
-      required: true,
+      required: 'username needed',
+      unique: true,
       trim: true
     },
     email: {
