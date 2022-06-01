@@ -12,7 +12,7 @@ const thoughtController = {
     },
 
     getThoughtById({ params }, res) {
-        Thought.findOne({ _id: params.id })
+        Thought.findOne({ _id: params.thoughtId })
             .select('-__v')
             .then(dbThoughtData => {
                 if(!dbThoughtData) {
@@ -48,7 +48,7 @@ const thoughtController = {
 
     updateThought({ params, body }, res) {
         Thought.findOneAndUpdate(
-            { _id: params.id }, 
+            { _id: params.thoughtId }, 
             body, 
             { new: true, runValidators: true })
             .then(dbThoughtData => {
@@ -62,7 +62,7 @@ const thoughtController = {
     },
 
     removeThought({ params }, res) {
-        Thought.findOneAndDelete({ _id: params.id })
+        Thought.findOneAndDelete({ _id: params.thoughtId })
             .then(deletedThought => {
                 return User.findOneAndUpdate(
                 { username: deletedThought.username },
